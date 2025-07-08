@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import pretter from 'eslint-plugin-prettier'
 
 export default [
   { ignores: ['dist'] },
@@ -19,6 +20,7 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      pretter,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -28,6 +30,14 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      "prettier/prettier": [
+        "error",
+        {
+          singleQuote: false,
+          printWidth: 130,
+          tabWidth: 2,
+        }
+      ]
     },
   },
 ]

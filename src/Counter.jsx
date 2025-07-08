@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from './componets/button/Button';
 
 // export const Counter = () => {
 //   let count =1;
@@ -21,8 +22,8 @@ export const Counter = () => {
   // const newCount = count + 1;
 
   return (
-        <button onClick={setCounterHandler}>
+        <Button onClick={setCounterHandler}>
         count is {count}
-        </button>
+        </Button>
   );
 }
