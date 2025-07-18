@@ -10,6 +10,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/forbidden" element={<div>forbidden!!!</div>} />
       <Route path="/addquestion" element={<div>add question</div>} />
+      <Route path="/question/:id" element={<div>QUESTION PAGE</div>} />
     </Route>
   </Routes>
   </BrowserRouter>
