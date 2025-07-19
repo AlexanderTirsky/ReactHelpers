@@ -7,9 +7,12 @@
     "dev": "vite --port 7788",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server --watch db.json -p 8801",
+    "server:helper": "json-server --help"
   },
   "dependencies": {
+    "json-server": "^1.0.0-beta.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3"
