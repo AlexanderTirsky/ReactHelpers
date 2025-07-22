@@ -37,7 +37,8 @@ export default [
           printWidth: 130,
           tabWidth: 2,
         }
-      ]
+      ],
+      "react/display-name": "off"
     },
   },
 ]
