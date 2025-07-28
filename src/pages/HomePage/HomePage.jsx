@@ -20,6 +20,8 @@ export const HomePage = () => {
     return questions;
   });
 
+  const cards = questions.filter((d) => d.question.toLowerCase().includes(searchValue.trim().toLowerCase()));
+
 
 //   const _getQuestions = async () => {
 //   try {
@@ -54,7 +56,9 @@ export const HomePage = () => {
 
   {isLoading && <Loader />}
   {error && <p>{error}</p>}
-  <QuestionCardList cards={questions} />
+  {cards.length === 0 && <p className={cls.noCardsInfo}>Нет такой карточки</p>}
+
+  <QuestionCardList cards={cards} />
   </>
   );
 }
