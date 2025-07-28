@@ -10,6 +10,7 @@ import { SearchInput } from "../../components/SearchInput";
 export const HomePage = () => {
   const [questions, setQuestions] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [sortSelectValue, setSortSelectValue ] = useState("");
 
 
   const [getQuestions, isLoading, error] = useFetch(async (url) => {
@@ -40,17 +41,30 @@ export const HomePage = () => {
 //   }
 // };
   useEffect(() => {
-    getQuestions("react");
-  }, []);
+    getQuestions(`react?${sortSelectValue}`);
+  }, [sortSelectValue]);
 
   const onSearchChangeHandler = (e) => {
     setSearchValue(e.target.value)
+  }
+
+  const onSortSelectChangeHandler = (e) => {
+    setSortSelectValue(e.target.value)
   }
 
   return ( 
   <>
   <div className={cls.controlsContainer}>
     <SearchInput value={searchValue} onChange={onSearchChangeHandler} />
+
+    <select value={sortSelectValue} onChange={onSortSelectChangeHandler} className={cls.select}>
+      <option value="">Фильтр</option>
+      <hr />
+      <option value="_sort=level">level ASK</option>
+      <option value="_sort=-level">level DESC</option>
+      <option value="_sort=completed">completed ASK</option>
+      <option value="_sort=-completed">completed DESK</option>
+    </select>
   </div>
   
 
