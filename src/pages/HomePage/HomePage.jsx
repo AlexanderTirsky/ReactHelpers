@@ -1,14 +1,18 @@
 import cls from "./HomePage.module.css"
 import { API_URL } from "../../constants"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { QuestionCardList } from "../../components/QuestionCardList";
 import { Loader } from "../../components/Loader";
 import { useFetch } from "../../hooks/useFetch";
 import { SearchInput } from "../../components/SearchInput";
+import { Button } from "../../components/Button";
+
+const DEFAULT_PER_PAGE = 10;
 
 
 export const HomePage = () => {
-  const [questions, setQuestions] = useState([]);
+  const [searchParams, setSearchParams] = useState(`?_page=1&_per_page=${DEFAULT_PER_PAGE}`);
+  const [questions, setQuestions] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [sortSelectValue, setSortSelectValue ] = useState("");
 
@@ -21,8 +25,23 @@ export const HomePage = () => {
     return questions;
   });
 
-  const cards = questions.filter((d) => d.question.toLowerCase().includes(searchValue.trim().toLowerCase()));
+  const cards = useMemo(() => {
+    if (questions?.data) {
+      if (searchValue.trim()) {
+        questions.data.filter((d) => d.question.toLowerCase().includes(searchValue.trim().toLowerCase()));
+      } else {
+      return questions.data
+      }
+    } 
+    return [];
+  }, [questions, searchValue]);
 
+
+  const pagination = useMemo(() => {
+    const totalCardsCount = questions?.pages || 0;
+
+    return Array(totalCardsCount).fill(0).map((_, i) => i + 1)
+  }, [questions]);
 
 //   const _getQuestions = async () => {
 //   try {
@@ -41,8 +60,8 @@ export const HomePage = () => {
 //   }
 // };
   useEffect(() => {
-    getQuestions(`react?${sortSelectValue}`);
-  }, [sortSelectValue]);
+    getQuestions(`react${searchParams}`);
+  }, [searchParams]);
 
   const onSearchChangeHandler = (e) => {
     setSearchValue(e.target.value)
@@ -50,6 +69,8 @@ export const HomePage = () => {
 
   const onSortSelectChangeHandler = (e) => {
     setSortSelectValue(e.target.value)
+
+    setSearchParams(`?_page=1&_per_page=${DEFAULT_PER_PAGE}&${e.target.value}`)
   }
 
   return ( 
@@ -70,9 +91,17 @@ export const HomePage = () => {
 
   {isLoading && <Loader />}
   {error && <p>{error}</p>}
-  {cards.length === 0 && <p className={cls.noCardsInfo}>Нет такой карточки</p>}
 
   <QuestionCardList cards={cards} />
+
+  {cards.length === 0 ? <p className={cls.noCardsInfo}>Нет такой карточки</p> : 
+      <div className={cls.paginationContainer}>
+        {
+          pagination.map((value) => {
+            return <Button key={value}>{value}</Button>
+          })
+        }
+      </div>}
   </>
   );
 }

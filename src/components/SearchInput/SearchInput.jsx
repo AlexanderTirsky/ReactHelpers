@@ -10,7 +10,7 @@ export const SearchInput= ({ value, onChange }) => {
       <label htmlFor={inputId}>
         <SearchIcon className={cls.searchIcon} />
       </label>
-      <input type="text" placeholder="search.." className={cls.input} id={inputId} value={value} onChange={onChange}/>
+      <input type="text" placeholder="Поиск.." className={cls.input} id={inputId} value={value} onChange={onChange}/>
     </div>
   )
 }
