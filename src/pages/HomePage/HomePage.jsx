@@ -1,6 +1,6 @@
 import cls from "./HomePage.module.css"
 import { API_URL } from "../../constants"
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { QuestionCardList } from "../../components/QuestionCardList";
 import { Loader } from "../../components/Loader";
 import { useFetch } from "../../hooks/useFetch";
@@ -16,6 +16,9 @@ export const HomePage = () => {
   const [searchValue, setSearchValue] = useState("");
   const [sortSelectValue, setSortSelectValue ] = useState("");
 
+  const controlsContainerRef = useRef();
+
+  const getActivePageNumber = () => (questions.next === null ? questions.last : questions.next - 1);
 
   const [getQuestions, isLoading, error] = useFetch(async (url) => {
     const response = await fetch(`${API_URL}/${url}`);
@@ -73,9 +76,16 @@ export const HomePage = () => {
     setSearchParams(`?_page=1&_per_page=${DEFAULT_PER_PAGE}&${e.target.value}`)
   }
 
+  const paginationHandler = (e) => {
+    if (e.target.tagName === "BUTTON") {
+      setSearchParams(`?_page=${e.target.textContent}&_per_page=${DEFAULT_PER_PAGE}&${sortSelectValue}`);
+      controlsContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   return ( 
   <>
-  <div className={cls.controlsContainer}>
+  <div className={cls.controlsContainer} ref={controlsContainerRef}>
     <SearchInput value={searchValue} onChange={onSearchChangeHandler} />
 
     <select value={sortSelectValue} onChange={onSortSelectChangeHandler} className={cls.select}>
@@ -95,10 +105,10 @@ export const HomePage = () => {
   <QuestionCardList cards={cards} />
 
   {cards.length === 0 ? <p className={cls.noCardsInfo}>Нет такой карточки</p> : 
-      <div className={cls.paginationContainer}>
+      <div className={cls.paginationContainer} onClick={paginationHandler}>
         {
           pagination.map((value) => {
-            return <Button key={value}>{value}</Button>
+            return <Button key={value} isActive={value === getActivePageNumber()}>{value}</Button>
           })
         }
       </div>}
