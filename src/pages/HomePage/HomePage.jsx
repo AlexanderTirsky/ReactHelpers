@@ -122,13 +122,15 @@ export const HomePage = () => {
   <QuestionCardList cards={cards} />
 
   {cards.length === 0 ? <p className={cls.noCardsInfo}>Нет такой карточки</p> : 
+    pagination.length > 1 && (
       <div className={cls.paginationContainer} onClick={paginationHandler}>
         {
           pagination.map((value) => {
             return <Button key={value} isActive={value === getActivePageNumber()}>{value}</Button>
           })
         }
-      </div>}
+      </div>
+    )}
   </>
   );
 }
