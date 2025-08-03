@@ -15,7 +15,8 @@ export const HomePage = () => {
   const [questions, setQuestions] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [sortSelectValue, setSortSelectValue ] = useState("");
-
+  const [countSelectValue, setCountSelectValue ] = useState("");
+  
   const controlsContainerRef = useRef();
 
   const getActivePageNumber = () => (questions.next === null ? questions.last : questions.next - 1);
@@ -73,15 +74,21 @@ export const HomePage = () => {
   const onSortSelectChangeHandler = (e) => {
     setSortSelectValue(e.target.value)
 
-    setSearchParams(`?_page=1&_per_page=${DEFAULT_PER_PAGE}&${e.target.value}`)
+    setSearchParams(`?_page=1&_per_page=${countSelectValue}&${e.target.value}`)
   }
 
   const paginationHandler = (e) => {
     if (e.target.tagName === "BUTTON") {
-      setSearchParams(`?_page=${e.target.textContent}&_per_page=${DEFAULT_PER_PAGE}&${sortSelectValue}`);
+      setSearchParams(`?_page=${e.target.textContent}&_per_page=${countSelectValue}&${sortSelectValue}`);
       controlsContainerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }
+
+  const onCountSelectChangeHandler = (e) => {
+
+    setCountSelectValue(e.target.value);
+    setSearchParams(`?_page=1&_per_page=${e.target.value}&${sortSelectValue}`);
+  };
 
   return ( 
   <>
@@ -91,10 +98,20 @@ export const HomePage = () => {
     <select value={sortSelectValue} onChange={onSortSelectChangeHandler} className={cls.select}>
       <option value="">Фильтр</option>
       <hr />
-      <option value="_sort=level">level ASK</option>
-      <option value="_sort=-level">level DESC</option>
-      <option value="_sort=completed">completed ASK</option>
-      <option value="_sort=-completed">completed DESK</option>
+      <option value="_sort=level">По уровню вопроса</option>
+      <option value="_sort=-level">По уровню сложности</option>
+      <option value="_sort=completed">Выполненые</option>
+      <option value="_sort=-completed">Не выполненые</option>
+    </select>
+
+    <select value={countSelectValue} onChange={onCountSelectChangeHandler} className={cls.select}>
+      <option value="">Число карточек</option>
+      <hr />
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
     </select>
   </div>
   
