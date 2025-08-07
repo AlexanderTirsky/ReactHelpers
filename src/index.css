@@ -35,12 +35,12 @@ body {
 
 @media (prefers-color-scheme: light) {
   :root {
-    --main-bg-color: #fff;
+    --main-bg-color: #c4c2c274;
     --text-color: #000;
 
-    --btn-text-color: #57C4DC;
-    --btn-bg-color: #16444f;
-    --card-bg-color: #ebedf0;
+    --btn-text-color: #fff;
+    --btn-bg-color: #383b3f;
+    --card-bg-color: #ebe3e3;
   }
 }
 
@@ -50,7 +50,7 @@ body {
     --text-color: #fff;
 
     --btn-text-color: #fff;
-    --btn-bg-color: #383b3f;
+    --btn-bg-color: #16444f;
     --card-bg-color: #343a46;
   }
 }
