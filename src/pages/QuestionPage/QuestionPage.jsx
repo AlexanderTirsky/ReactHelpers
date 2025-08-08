@@ -25,12 +25,27 @@ export const QuestionPage = () => {
   setCard(data);
 });
 
+  const [updataCard, isCardUpdating] = useFetch(async (isChecked) => {
+  const response = await fetch(`${API_URL}/react/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ completed: isChecked }),
+    });
+  const data = await response.json();
+
+    setCard(data);
+});
+
   useEffect(() => {
     fetchCard();
   }, []);
 
-  const onCheckboxChangeHandler = () => {
+    useEffect(() => {
+    card !== null && setIsChecked(card.completed);
+  }, [card]);
 
+  const onCheckboxChangeHandler = () => {
+    setIsChecked(!isChecked);
+    updataCard(!isChecked)
   }
 
   return (
@@ -68,12 +83,12 @@ export const QuestionPage = () => {
     </ul>
 
     <label htmlFor={checkboxId} className={cls.cardCheckbox}>
-      <input type="checkbox" id={checkboxId} className={cls.checkbox} checked={isChecked} onChange={onCheckboxChangeHandler} disabled={false}/>
+      <input type="checkbox" id={checkboxId} className={cls.checkbox} checked={isChecked} onChange={onCheckboxChangeHandler} disabled={isCardUpdating}/>
       <span>Отметить вопрос выполненым</span>
     </label>
 
-      <Button onClick={() => navigate(`/editquestion/${card.id}`)}>Редактировать карточку</Button>
-      <Button onClick={() => navigate("/")}>Назад</Button>
+      <Button onClick={() => navigate(`/editquestion/${card.id}`)} isDisabled={isCardUpdating}>Редактировать карточку</Button>
+      <Button onClick={() => navigate("/")} isDisabled={isCardUpdating}>Назад</Button>
     </div>
     }
     </>
