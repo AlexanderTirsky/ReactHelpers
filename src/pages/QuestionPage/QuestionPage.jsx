@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import { useEffect, useId, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { API_URL } from "../../constants";
-import { Loader } from "../../components/Loader";
+import { Loader, SmallLoader } from "../../components/Loader";
 
 
 export const QuestionPage = () => {
@@ -85,6 +85,7 @@ export const QuestionPage = () => {
     <label htmlFor={checkboxId} className={cls.cardCheckbox}>
       <input type="checkbox" id={checkboxId} className={cls.checkbox} checked={isChecked} onChange={onCheckboxChangeHandler} disabled={isCardUpdating}/>
       <span>Отметить вопрос выполненым</span>
+      {isCardUpdating && <SmallLoader />}
     </label>
 
       <Button onClick={() => navigate(`/editquestion/${card.id}`)} isDisabled={isCardUpdating}>Редактировать карточку</Button>
