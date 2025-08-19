@@ -1,21 +1,26 @@
 import { Outlet } from "react-router-dom";
 import cls from "./MainLayout.module.css";
 import { Header } from "../Header";
+import { ToastContainer } from "react-toastify";
 
 export const MainLayout = () => {
   const correntYear = new Date().getFullYear();
   
   return (
+    <>
     <div className={cls.mainLayout}>
-    <Header />
-    <div className={cls.mainWrapper}>
-    <main className={cls.main}>
+      <Header />
+      <div className={cls.mainWrapper}>
+        <main className={cls.main}>
       <Outlet />
-    </main>
+      </main>
     <footer className={cls.footer}>React Questing Cards Application | {correntYear} <br />
     by Alexander Tirsky
     </footer>
+      </div>
     </div>
-    </div>
+
+    <ToastContainer />
+    </>
   )
 }
