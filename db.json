@@ -564,6 +564,18 @@
       "resources": [],
       "level": 1,
       "completed": false
+    },
+    {
+      "id": "5dff",
+      "question": "Ты крутой програмист",
+      "answer": "Да ты крут ",
+      "description": "Еее!",
+      "resources": [
+        "https://yandex.com/",
+        " https://vk.com/"
+      ],
+      "level": 1,
+      "completed": false
     }
   ]
 }

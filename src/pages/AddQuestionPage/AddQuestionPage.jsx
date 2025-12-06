@@ -1,37 +1,74 @@
+import { useActionState } from "react"
 import { Button } from "../../components/Button"
 import cls from "./AddQuestionPage.module.css"
+import { delayFn } from "../../helpers/delayFn"
+import { toast } from "react-toastify"
+import { API_URL } from "../../constants"
+
+const createCardAction = async (_prevState, formData) => {
+  try {
+    await delayFn();
+
+    const newQuestion = Object.fromEntries(formData);
+    const resources = newQuestion.resources.trim();
+    const isClearForm = newQuestion.clearForm;
+    
+    const response = await fetch(`${API_URL}/react`, {
+      method: "POST",
+      body: JSON.stringify({
+        question: newQuestion.question,
+        answer: newQuestion.answer,
+        description: newQuestion.description,
+        resources: resources.length ? resources.split(",") : [],
+        level: Number(newQuestion.level),
+        completed: false,
+        editDate: undefined,
+      }),
+    });
+
+    const question = response.json();
+    toast.success("New question is successfuly created!");
+    
+    return isClearForm ? {} : question;
+  } catch (error) {
+    toast.error(error.message);
+    
+  }
+}
 
 export const AddQuestionPage = () => {
+  const [formState, formAction, isPending] = useActionState(createCardAction, { clearForm: true });
+
   return (
     <>
     <h1 className={cls.fromTitle}>Добавить новую карточку</h1>
 
     <div className={cls.formContainer}>
-      <form action="" className={cls.form}>
+      <form action={formAction} className={cls.form}>
 
         <div className={cls.formControl}>
         <label htmlFor="questionField">Вопрос: </label>
-          <textarea defaultValue={"defaultValue"} name="question" id="questionField" cols="30" rows="2" required placeholder="Пожалуйста напишите вопрос"></textarea>
+          <textarea defaultValue={formState.question} name="question" id="questionField" cols="30" rows="2" required placeholder="Пожалуйста напишите вопрос"></textarea>
         </div>
 
         <div className={cls.formControl}>
         <label htmlFor="answerField">Короткий ответ: </label>
-          <textarea defaultValue={"defaultValue"} name="answer" id="answerField" cols="30" rows="2" required placeholder="Пожалуйста напишите краткий ответ: "></textarea>
+          <textarea defaultValue={formState.answer} name="answer" id="answerField" cols="30" rows="2" required placeholder="Пожалуйста напишите краткий ответ: "></textarea>
         </div>
 
         <div className={cls.formControl}>
         <label htmlFor="descriptionField">Полный ответ: </label>
-          <textarea defaultValue={"defaultValue"} name="description" id="descriptionField" cols="30" rows="4" required placeholder="Пожалуйста напишите полный ответ: "></textarea>
+          <textarea defaultValue={formState.description} name="description" id="descriptionField" cols="30" rows="4" required placeholder="Пожалуйста напишите полный ответ: "></textarea>
         </div>
 
         <div className={cls.formControl}>
         <label htmlFor="resourcesField">Ресурсы: </label>
-          <textarea defaultValue={"defaultValue"} name="resources" id="resourcesField" cols="30" rows="1" required placeholder="Пожалуйста укажите ссылки через запятую."></textarea>
+          <textarea defaultValue={formState.resources} name="resources" id="resourcesField" cols="30" rows="1" required placeholder="Пожалуйста укажите ссылки через запятую."></textarea>
         </div>
         
         <div className={cls.formControl}>
           <label htmlFor="levelField">Уровень: </label>
-          <select name="level" id="levelField" defaultValue={"defaultValue"}>
+          <select name="level" id="levelField" defaultValue={formState.level}>
             <option disabled>Уровень вопроса</option>
             <hr />
             <option value="1">1 - легкий</option>
@@ -41,11 +78,11 @@ export const AddQuestionPage = () => {
         </div>
 
         <label htmlFor="clearFormField" className={cls.clearFormFieldControl}>
-          <input className={cls.checkbox} type="checkbox" name="clearForm" id="clearFormField" defaultValue={true} />
+          <input className={cls.checkbox} type="checkbox" name="clearForm" id="clearFormField" defaultChecked={formState.clearForm} />
           <span>Отчистить форму после отправки?</span>
         </label>
 
-      <Button>Добавить вопрос.</Button>
+      <Button isDisabled={isPending}>Добавить вопрос.</Button>
       </form>
     </div>
     </>
