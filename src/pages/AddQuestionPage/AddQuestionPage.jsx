@@ -1,5 +1,6 @@
 import { useActionState } from "react"
 import { Button } from "../../components/Button"
+import { Loader } from "../../components/Loader"
 import cls from "./AddQuestionPage.module.css"
 import { delayFn } from "../../helpers/delayFn"
 import { toast } from "react-toastify"
@@ -45,6 +46,8 @@ export const AddQuestionPage = () => {
 
   return (
     <>
+    {isPending && <Loader />}
+
     <h1 className={cls.fromTitle}>Добавить новую карточку</h1>
 
     <div className={cls.formContainer}>
@@ -67,7 +70,7 @@ export const AddQuestionPage = () => {
 
         <div className={cls.formControl}>
         <label htmlFor="resourcesField">Ресурсы: </label>
-          <textarea defaultValue={formState.resources} name="resources" id="resourcesField" cols="30" rows="1" required placeholder="Пожалуйста укажите ссылки через запятую."></textarea>
+          <textarea defaultValue={formState.resources} name="resources" id="resourcesField" cols="30" rows="1" placeholder="Пожалуйста укажите ссылки через запятую."></textarea>
         </div>
         
         <div className={cls.formControl}>

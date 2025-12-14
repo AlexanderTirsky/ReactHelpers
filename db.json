@@ -576,6 +576,15 @@
       ],
       "level": 1,
       "completed": false
+    },
+    {
+      "id": "dc95",
+      "question": "Как дела?",
+      "answer": "Отлично",
+      "description": "Все супер! Я счастлив!",
+      "resources": [],
+      "level": 1,
+      "completed": false
     }
   ]
 }
