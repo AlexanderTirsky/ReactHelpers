@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import cls from "./MainLayout.module.css";
 import { Header } from "../Header";
 import { ToastContainer } from "react-toastify";
+import { Suspense } from "react";
+import { Loader } from "../Loader";
 
 export const MainLayout = () => {
   const correntYear = new Date().getFullYear();
@@ -12,7 +14,9 @@ export const MainLayout = () => {
       <Header />
       <div className={cls.mainWrapper}>
         <main className={cls.main}>
-      <Outlet />
+          <Suspense fallback={<Loader  />}>
+            <Outlet />
+          </Suspense>
       </main>
     <footer className={cls.footer}>React Questing Cards Application | {correntYear} <br />
     by Alexander Tirsky
