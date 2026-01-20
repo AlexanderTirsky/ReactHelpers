@@ -1,9 +1,9 @@
-import cls from "./EditQuestionPage.module.css";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import { API_URL } from "../../constants";
 import { useEffect, useState } from "react";
 import { Loader } from "../../components/Loader";
+import { EditQuestion } from "./EditQuestion";
 
 export const EditQuestionPage = () => {
   const { id } = useParams();
@@ -11,7 +11,7 @@ export const EditQuestionPage = () => {
 
   const [fetchQuestion, isQuestionLoading] = useFetch(async () => {
     const response = await fetch(`${API_URL}/react/${id}`);
-    const data = response.json();
+    const data = await response.json();
 
     setQuestion(data);
   });
@@ -23,7 +23,7 @@ export const EditQuestionPage = () => {
   return (
     <>
       {isQuestionLoading && <Loader />}
-      {question && <p>EditQuestionPage</p>}
+      {question && <EditQuestion initialState={question} />}
     </>
   );
 };
