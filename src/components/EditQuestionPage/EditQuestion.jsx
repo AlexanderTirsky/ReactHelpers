@@ -56,6 +56,14 @@ export const EditQuestion = ({ initialState = {} }) => {
       <h1 className={cls.fromTitle}>Редактировать карточку</h1>
 
       <div className={cls.formContainer}>
+        <button
+          className={cls.removeBtn}
+          disabled={isPending}
+          onClick={() => {}}
+        >
+          X
+        </button>
+
         <QuestionForm
           formAction={formAction}
           state={formState}
